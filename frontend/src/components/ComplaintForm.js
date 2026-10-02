@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./ComplaintForm.css";
 import { createComplaint } from "../api";
 
 export default function ComplaintForm({ onSubmitted }) {
@@ -14,7 +15,7 @@ export default function ComplaintForm({ onSubmitted }) {
     e.preventDefault();
     setError("");
     if (!form.name.trim() || !form.description.trim()) {
-      setError("Please fill in your name and a description of the issue.");
+      setError("Add your name and a description before filing.");
       return;
     }
     setLoading(true);
@@ -23,79 +24,54 @@ export default function ComplaintForm({ onSubmitted }) {
       onSubmitted(res.data);
       setForm({ name: "", contact: "", description: "" });
     } catch (err) {
-      setError("Something went wrong while submitting. Please try again.");
+      setError("The report didn't go through. Try again in a moment.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={styles.form}>
-      <h2>Report a Civic Issue</h2>
+    <form onSubmit={handleSubmit} className="form-card">
+      <div className="field">
+        <label htmlFor="name">Your name</label>
+        <input
+          id="name"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Asha Sharma"
+        />
+      </div>
 
-      <label style={styles.label}>Your Name</label>
-      <input
-        style={styles.input}
-        name="name"
-        value={form.name}
-        onChange={handleChange}
-        placeholder="e.g. Asha Sharma"
-      />
+      <div className="field">
+        <label htmlFor="contact">
+          Contact <span className="hint">(optional)</span>
+        </label>
+        <input
+          id="contact"
+          name="contact"
+          value={form.contact}
+          onChange={handleChange}
+          placeholder="Phone or email"
+        />
+      </div>
 
-      <label style={styles.label}>Contact (optional)</label>
-      <input
-        style={styles.input}
-        name="contact"
-        value={form.contact}
-        onChange={handleChange}
-        placeholder="Phone or email"
-      />
+      <div className="field">
+        <label htmlFor="description">What's the issue?</label>
+        <textarea
+          id="description"
+          name="description"
+          value={form.description}
+          onChange={handleChange}
+          placeholder="Describe what's happening, and where."
+        />
+      </div>
 
-      <label style={styles.label}>Describe the issue</label>
-      <textarea
-        style={{ ...styles.input, height: 100 }}
-        name="description"
-        value={form.description}
-        onChange={handleChange}
-        placeholder="Describe the civic issue in detail..."
-      />
+      {error && <p className="form-error">{error}</p>}
 
-      {error && <p style={styles.error}>{error}</p>}
-
-      <button type="submit" style={styles.button} disabled={loading}>
-        {loading ? "Submitting..." : "Submit Complaint"}
+      <button type="submit" className="submit-btn" disabled={loading}>
+        {loading ? "Filing report…" : "File report"}
       </button>
     </form>
   );
 }
-
-const styles = {
-  form: {
-    background: "#fff",
-    padding: "1.5rem",
-    borderRadius: 8,
-    boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
-    maxWidth: 480,
-    marginBottom: "2rem",
-  },
-  label: { display: "block", marginTop: 10, marginBottom: 4, fontWeight: 600, fontSize: 14 },
-  input: {
-    width: "100%",
-    padding: "8px 10px",
-    border: "1px solid #ccc",
-    borderRadius: 4,
-    fontSize: 14,
-    boxSizing: "border-box",
-  },
-  button: {
-    marginTop: 16,
-    padding: "10px 18px",
-    background: "#1f3864",
-    color: "#fff",
-    border: "none",
-    borderRadius: 4,
-    cursor: "pointer",
-    fontSize: 14,
-  },
-  error: { color: "#c0392b", fontSize: 13, marginTop: 8 },
-};

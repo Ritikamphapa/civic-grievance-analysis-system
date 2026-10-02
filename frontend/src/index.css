@@ -1,0 +1,64 @@
+/* ===========================================================
+   Design tokens
+   Palette is grounded in the APWA utility-marking color code
+   (the standard colors used to flag underground utilities before
+   digging) -- a fitting source for a civic-infrastructure app:
+   red = electric, blue = water, green = sewer, orange = comms,
+   pink = survey marks.
+   =========================================================== */
+:root {
+  --ink: #122A3B;
+  --ink-soft: #3C5468;
+  --paper: #F4F6F5;
+  --paper-raised: #FFFFFF;
+  --line: #D8DEDC;
+
+  --flag-water: #2E6F9E;
+  --flag-electric: #C1443C;
+  --flag-roads: #D9792B;
+  --flag-sanitation: #3F8F5F;
+  --flag-safety: #B98A12;
+  --flag-other: #7A5FA0;
+
+  --positive: #3F8F5F;
+  --neutral: #6B7680;
+  --negative: #C1443C;
+
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  --radius: 3px;
+  --shadow-card: 0 1px 2px rgba(18, 42, 59, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+:focus-visible {
+  outline: 2px solid var(--flag-water);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

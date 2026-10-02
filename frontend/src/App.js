@@ -1,7 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
+import "./App.css";
 import ComplaintForm from "./components/ComplaintForm";
 import ComplaintList from "./components/ComplaintList";
 import { getComplaints, getStats } from "./api";
+import { CATEGORY_COLORS } from "./theme";
 
 function App() {
   const [complaints, setComplaints] = useState([]);
@@ -15,7 +17,7 @@ function App() {
       setStats(statsRes.data);
       setError("");
     } catch (err) {
-      setError("Could not reach the backend API. Is it running?");
+      setError("Can't reach the backend API right now. Make sure it's running, then refresh.");
     }
   }, []);
 
@@ -25,58 +27,58 @@ function App() {
 
   const handleSubmitted = (newComplaint) => {
     setComplaints((prev) => [newComplaint, ...prev]);
-    loadData(); // refresh stats
+    loadData();
   };
 
   return (
-    <div style={styles.page}>
-      <header style={styles.header}>
-        <h1>AI-Powered Civic Grievance Analysis System</h1>
-        <p>Submit civic issues and let NLP automatically categorize and analyze them.</p>
+    <div className="page">
+      <header className="banner">
+        <div className="seal">CG</div>
+        <div>
+          <h1>Civic Grievance Desk</h1>
+          <p>Report a local issue. It's classified and routed automatically.</p>
+        </div>
       </header>
 
-      {error && <p style={{ color: "#c0392b" }}>{error}</p>}
-
       {stats && (
-        <div style={styles.stats}>
-          <div style={styles.statCard}>
-            <strong>{stats.total}</strong>
-            <span>Total Complaints</span>
+        <div className="stat-strip">
+          <div className="stat-total">
+            {stats.total}
+            <span>reports filed</span>
           </div>
           {Object.entries(stats.by_category).map(([cat, count]) => (
-            <div style={styles.statCard} key={cat}>
-              <strong>{count}</strong>
-              <span>{cat}</span>
+            <div className="stat-chip" key={cat}>
+              <span className="dot" style={{ background: CATEGORY_COLORS[cat] || "#888" }} />
+              {cat} &middot; {count}
             </div>
           ))}
         </div>
       )}
 
-      <ComplaintForm onSubmitted={handleSubmitted} />
-      <ComplaintList complaints={complaints} />
+      {error && <p className="error-banner">{error}</p>}
+
+      <div className="layout">
+        <div className="form-col">
+          <p className="section-label">File a report</p>
+          <ComplaintForm onSubmitted={handleSubmitted} />
+        </div>
+        <div className="log-col">
+          <p className="section-label">Case log</p>
+          <ComplaintList complaints={complaints} />
+        </div>
+      </div>
+
+      <div className="legend">
+        Category colors follow the standard utility-marking code:
+        {Object.entries(CATEGORY_COLORS).map(([cat, color]) => (
+          <span key={cat} style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
+            <span className="dot" style={{ background: color }} />
+            {cat}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
-
-const styles = {
-  page: {
-    fontFamily: "Segoe UI, Arial, sans-serif",
-    background: "#f4f6f8",
-    minHeight: "100vh",
-    padding: "2rem",
-  },
-  header: { marginBottom: "1.5rem" },
-  stats: { display: "flex", gap: 12, flexWrap: "wrap", marginBottom: "1.5rem" },
-  statCard: {
-    background: "#fff",
-    padding: "12px 18px",
-    borderRadius: 8,
-    boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    minWidth: 100,
-  },
-};
 
 export default App;

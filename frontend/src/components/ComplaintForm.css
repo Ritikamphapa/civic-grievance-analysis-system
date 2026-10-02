@@ -1,0 +1,76 @@
+.form-card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.field .hint {
+  font-weight: 400;
+  color: #8B99A3;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--flag-water);
+  outline-offset: 0;
+  border-color: transparent;
+}
+
+.field textarea {
+  min-height: 110px;
+  line-height: 1.5;
+}
+
+.form-error {
+  font-size: 13px;
+  color: var(--negative);
+  margin: 0 0 12px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 11px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: var(--ink-soft);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
